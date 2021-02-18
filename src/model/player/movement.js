@@ -1,18 +1,28 @@
 import store from "../../config/store";
-import {SPRITE_SIZE} from "../../config/constans";
+import {playerConfig} from "../../config/constans";
+
+let shouldRun = store.getState().player.shouldRun;
 
 export default function handleMovement(player) {
+    window.addEventListener("keydown", ev => {
+        handleKey(ev, "DOWN");
+    })
+    window.addEventListener("keyup", ev => {
+        handleKey(ev, "UP");
+    })
+
+    setInterval(runIfShould, playerConfig.INTERVAL);
+    return player
+
     function getNewPosition(direction) {
         const oldPosition = store.getState().player.position
         switch (direction) {
             case "WEST":
-                return [oldPosition[0] - SPRITE_SIZE, oldPosition[1]]
+                return [oldPosition[0] - playerConfig.STEP_SIZE, oldPosition[1]]
             case "EAST":
-                return [oldPosition[0] + SPRITE_SIZE, oldPosition[1]]
-            case "NORTH":
-                return [oldPosition[0], oldPosition[1] - SPRITE_SIZE]
-            case "SOUTH":
-                return [oldPosition[0], oldPosition[1] + SPRITE_SIZE]
+                return [oldPosition[0] + playerConfig.STEP_SIZE, oldPosition[1]]
+            default:
+                return console.log("bad direction for get new position")
         }
     }
 
@@ -25,23 +35,28 @@ export default function handleMovement(player) {
         })
     }
 
-    function handleKeyDown(ev) {
+    function runIfShould() {
+        if (shouldRun.east === true) {
+            dispatchMove("EAST")
+        } else if (shouldRun.west === true) {
+            dispatchMove("WEST")
+        }
+    }
+
+    function handleKey(ev, position) {
         switch (ev.keyCode) {
             case 37: //left
-                return dispatchMove("WEST")
-            case 38: //up
-                return dispatchMove("NORTH")
+                shouldRun.west = setUpRunDirection(position)
+                break;
             case 39: //right
-                return dispatchMove("EAST")
-            case 40: //down
-                return dispatchMove("SOUTH")
+                shouldRun.east = setUpRunDirection(position)
+                break
             default:
                 return console.log(ev.keyCode)
         }
     }
 
-    window.addEventListener("keydown", ev => {
-        handleKeyDown(ev);
-    })
-    return player
+    function setUpRunDirection(position) {
+        return position === "DOWN"
+    }
 }

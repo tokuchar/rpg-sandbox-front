@@ -1,5 +1,9 @@
 const initialState = {
-    position: [0, 0],
+    position: [0, 200],
+    shouldRun: {
+        east: false,
+        west: false,
+    }
 }
 
 const playerReducer = (state = initialState, action) => {

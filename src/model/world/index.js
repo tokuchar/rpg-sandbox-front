@@ -3,14 +3,14 @@ import Map from "../map";
 import Player from "../player";
 
 function World(props) {
-    return(
+    return (
         <div
-        style={{
-            position: "relative",
-            width: "800px",
-            height: "300px",
-            margin: "10px auto",
-        }}
+            style={{
+                position: "relative",
+                width: "800px",
+                height: "300px",
+                margin: "10px auto",
+            }}
         >
             <Map/>
             <Player/>

@@ -1,1 +1,4 @@
-export const SPRITE_SIZE = 15
+export const playerConfig = {
+    STEP_SIZE : 1,
+    INTERVAL: 5,
+}
